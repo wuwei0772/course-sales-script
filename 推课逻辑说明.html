@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>剑桥小班课 · 推课话术逻辑说明</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  :root{
+    --ink:#0f172a; --sub:#475569; --mut:#94a3b8; --line:#e2e8f0;
+    --bg:#f6f8fb; --card:#ffffff;
+    --blue:#2563eb; --blue-bg:#eff6ff; --blue-bd:#bfdbfe;
+    --green:#16a34a; --green-bg:#f0fdf4; --green-bd:#bbf7d0;
+    --amber:#d97706; --amber-bg:#fffbeb; --amber-bd:#fde68a;
+    --rose:#e11d48; --rose-bg:#fff1f2; --rose-bd:#fecdd3;
+    --slate:#64748b; --slate-bg:#f1f5f9; --slate-bd:#cbd5e1;
+    --violet:#7c3aed; --violet-bg:#f5f3ff; --violet-bd:#ddd6fe;
+  }
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;
+    color:var(--ink); background:var(--bg); line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px; margin:0 auto; padding:0 20px 80px;}
+
+  /* hero */
+  .hero{
+    background:linear-gradient(135deg,#1e3a8a,#2563eb 60%,#3b82f6);
+    color:#fff; padding:56px 20px 48px; text-align:center;
+  }
+  .hero h1{font-size:30px; font-weight:800; letter-spacing:.5px; margin-bottom:10px;}
+  .hero p{font-size:15px; opacity:.92; max-width:640px; margin:0 auto;}
+  .hero .tag{
+    display:inline-block; margin-bottom:18px; padding:5px 14px; border-radius:999px;
+    background:rgba(255,255,255,.15); font-size:12.5px; letter-spacing:2px; font-weight:600;
+  }
+
+  /* section */
+  section{margin-top:44px;}
+  .sec-head{display:flex; align-items:center; gap:12px; margin-bottom:18px;}
+  .sec-num{
+    flex-shrink:0; width:34px; height:34px; border-radius:10px;
+    background:var(--blue); color:#fff; font-weight:800; font-size:16px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .sec-head h2{font-size:21px; font-weight:800;}
+  .sec-head .sub{font-size:13px; color:var(--mut); margin-top:2px;}
+
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:16px;
+    padding:22px 24px; box-shadow:0 1px 2px rgba(15,23,42,.04);
+  }
+  .card + .card{margin-top:14px;}
+  .lead{color:var(--sub); font-size:14.5px; margin-bottom:6px;}
+
+  /* pipeline */
+  .pipe{display:flex; flex-wrap:wrap; gap:10px; align-items:stretch;}
+  .pipe .step{
+    flex:1 1 150px; background:var(--card); border:1px solid var(--line);
+    border-radius:14px; padding:16px 14px; position:relative;
+  }
+  .pipe .step .k{font-size:12px; color:var(--blue); font-weight:700; letter-spacing:1px;}
+  .pipe .step .t{font-size:15px; font-weight:700; margin:6px 0 4px;}
+  .pipe .step .d{font-size:12.5px; color:var(--sub);}
+  .pipe .arrow{display:flex; align-items:center; color:var(--mut); font-size:20px;}
+
+  /* table */
+  table{width:100%; border-collapse:collapse; font-size:14px;}
+  th,td{padding:10px 12px; text-align:left; border-bottom:1px solid var(--line);}
+  th{background:var(--slate-bg); color:var(--sub); font-weight:700; font-size:12.5px; letter-spacing:.5px;}
+  td.score{font-variant-numeric:tabular-nums; font-weight:700; white-space:nowrap;}
+  tr:last-child td{border-bottom:0;}
+  .badge{
+    display:inline-block; padding:2px 10px; border-radius:999px;
+    font-size:12px; font-weight:700; border:1px solid;
+  }
+  .b-slate{background:var(--slate-bg); color:var(--slate); border-color:var(--slate-bd);}
+  .b-amber{background:var(--amber-bg); color:var(--amber); border-color:var(--amber-bd);}
+  .b-blue{background:var(--blue-bg); color:var(--blue); border-color:var(--blue-bd);}
+  .b-green{background:var(--green-bg); color:var(--green); border-color:var(--green-bd);}
+  .b-rose{background:var(--rose-bg); color:var(--rose); border-color:var(--rose-bd);}
+  .b-violet{background:var(--violet-bg); color:var(--violet); border-color:var(--violet-bd);}
+
+  /* decision tree */
+  .tree{display:grid; gap:12px;}
+  .branch{
+    border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--card);
+  }
+  .branch > .bh{
+    padding:12px 18px; font-weight:800; font-size:15px; color:#fff;
+    display:flex; align-items:center; gap:10px;
+  }
+  .branch.ket > .bh{background:linear-gradient(90deg,#2563eb,#3b82f6);}
+  .branch.pet > .bh{background:linear-gradient(90deg,#7c3aed,#a855f7);}
+  .branch .bh .pill{
+    margin-left:auto; background:rgba(255,255,255,.2); padding:3px 10px;
+    border-radius:999px; font-size:12px; font-weight:600;
+  }
+  .rule{
+    display:grid; grid-template-columns:170px 1fr; gap:14px; align-items:center;
+    padding:13px 18px; border-top:1px solid var(--line);
+  }
+  .rule .cond{
+    font-variant-numeric:tabular-nums; font-weight:700; font-size:13.5px;
+    background:var(--slate-bg); border:1px solid var(--line); border-radius:10px;
+    padding:8px 10px; text-align:center; color:var(--ink);
+  }
+  .rule .out .course{font-weight:800; font-size:14.5px; margin-bottom:2px;}
+  .rule .out .course .dur{font-weight:600; color:var(--blue); font-size:12.5px;}
+  .rule .out .note{font-size:12.5px; color:var(--sub);}
+  .rule.is-pu .cond{background:var(--rose-bg); border-color:var(--rose-bd); color:var(--rose);}
+
+  /* module list */
+  .mods{display:grid; gap:12px;}
+  .mod{
+    display:grid; grid-template-columns:120px 1fr; gap:0; border:1px solid var(--line);
+    border-radius:14px; overflow:hidden; background:var(--card);
+  }
+  .mod .label{
+    background:var(--blue-bg); color:var(--blue); font-weight:800; font-size:14px;
+    padding:16px 14px; display:flex; align-items:center; justify-content:center;
+    text-align:center; border-right:1px solid var(--line); white-space:nowrap;
+  }
+  .mod .body{padding:14px 18px; font-size:13.5px; color:var(--sub);}
+  .mod .body b{color:var(--ink);}
+
+  /* why / selling points */
+  .why{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .why .c{border:1px solid var(--line); border-radius:14px; padding:18px; background:var(--card);}
+  .why .c .n{font-size:13px; font-weight:800; color:var(--blue); margin-bottom:6px;}
+  .why .c .t{font-weight:800; font-size:15px; margin-bottom:6px;}
+  .why .c .d{font-size:13px; color:var(--sub);}
+
+  .map{display:grid; gap:10px;}
+  .map .row{
+    display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center;
+    border:1px solid var(--line); border-radius:12px; padding:12px 16px; background:var(--card);
+  }
+  .map .row .from{font-weight:700;}
+  .map .row .to{font-weight:800; color:var(--green); text-align:right;}
+  .map .row .ar{color:var(--mut);}
+
+  .callout{
+    border-left:4px solid var(--amber); background:var(--amber-bg);
+    border-radius:0 12px 12px 0; padding:14px 18px; font-size:13.5px; color:#7c4a03;
+  }
+  .callout b{color:#92400e;}
+  .callout + .callout{margin-top:10px;}
+
+  ul.clean{list-style:none; display:grid; gap:8px;}
+  ul.clean li{position:relative; padding-left:22px; font-size:13.5px; color:var(--sub);}
+  ul.clean li::before{content:"▹"; position:absolute; left:4px; color:var(--blue); font-weight:800;}
+  ul.clean li b{color:var(--ink);}
+
+  .foot{margin-top:54px; text-align:center; color:var(--mut); font-size:12.5px;}
+
+  .topbtn{
+    position:fixed; top:18px; right:18px; z-index:50;
+    display:inline-flex; align-items:center; gap:6px;
+    padding:9px 16px; border-radius:999px; cursor:pointer;
+    background:#fff; color:var(--blue); font-size:13.5px; font-weight:700;
+    border:1px solid var(--blue-bd); box-shadow:0 4px 14px rgba(15,23,42,.12);
+  }
+  .topbtn:active{transform:scale(.96);}
+
+  @media print{
+    .topbtn{display:none !important;}
+    .hero{background:#1e3a8a !important; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+    body{background:#fff;}
+    section{break-inside:avoid;}
+  }
+
+  @media (max-width:680px){
+    .why{grid-template-columns:1fr;}
+    .rule{grid-template-columns:1fr;}
+    .rule .cond{text-align:left;}
+    .mod{grid-template-columns:1fr;}
+    .mod .label{border-right:0; border-bottom:1px solid var(--line);}
+    .map .row{grid-template-columns:1fr; text-align:left; gap:4px;}
+    .map .row .to{text-align:left;}
+    .map .row .ar{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<button class="topbtn" onclick="window.print()">⬇ 下载 PDF</button>
+
+<div class="hero">
+  <h1>剑桥小班课推课话术 · 概览</h1>
+  <p>销售顾问只需录入孩子的 KET / PET 模考四项分数，系统即可自动判定水平、匹配课程、生成可直接发送的推课话术。本页说明这套逻辑的每一层判断依据。</p>
+</div>
+
+<div class="wrap">
+
+  <!-- 1. 整体流程 -->
+  <section>
+    <div class="sec-head">
+      <div class="sec-num">1</div>
+      <div><h2>整体流程一览</h2><div class="sub">从一组模考分数到一段成稿话术，全程自动</div></div>
+    </div>
+    <div class="card">
+      <div class="pipe">
+        <div class="step"><div class="k">STEP 1</div><div class="t">选考试类型</div><div class="d">KET 或 PET</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="k">STEP 2</div><div class="t">录入四项分数</div><div class="d">听力 / 口语 / 阅读 / 写作</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="k">STEP 3</div><div class="t">自动判定水平</div><div class="d">单项与均分成绩等级与对应公立校年级</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="k">STEP 4</div><div class="t">匹配推荐课程</div><div class="d">Power Up 2 / Power Up 3 / Think1（KET）/ Think2（PET）/ Think3、4（FCE）</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="k">STEP 5</div><div class="t">生成成稿话术</div><div class="d">五大模块，一键复制发送</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 水平判定 -->
+  <section>
+    <div class="sec-head">
+      <div class="sec-num">2</div>
+      <div><h2>水平判定标准</h2><div class="sub">每一个单项分数、以及四项均分，都会对照剑桥官方量表给出水平标签</div></div>
+    </div>
+
+    <div class="card">
+      <div class="lead"><b>KET 模考</b>（A2 Key 量表，常见区间 100–150）</div>
+      <table>
+        <thead><tr><th style="width:160px">分数区间</th><th style="width:150px">水平判定</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="score">&lt; 82</td><td><span class="badge b-slate">未达 Pre-A1</span></td><td>成绩单上不显示分数，连 Pre-A1 都未达到，基础特别薄弱，相当于公立校小学 3–4 年级水平</td></tr>
+          <tr><td class="score">82 – 99</td><td><span class="badge b-slate">Pre-A1</span></td><td>预备级，基础尚浅，相当于公立校小学 3–4 年级水平</td></tr>
+          <tr><td class="score">100 – 119</td><td><span class="badge b-amber">A1</span></td><td>已有初步基础，相当于公立校小学 5–6 年级水平</td></tr>
+          <tr><td class="score">120 – 132</td><td><span class="badge b-blue">A2 Grade C</span></td><td>达到 A2，KET 通过水平，相当于公立校初中 1 年级水平</td></tr>
+          <tr><td class="score">133 – 139</td><td><span class="badge b-blue">A2 Grade B</span></td><td>KET 优秀，相当于公立校初中 1–2 年级水平</td></tr>
+          <tr><td class="score">≥ 140</td><td><span class="badge b-green">B1 Grade A</span></td><td>KET 卓越，已摸到 B1 门槛，相当于公立校初中 2–3 年级水平</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="lead"><b>PET 模考</b>（B1 Preliminary 量表，常见区间 120–170）</div>
+      <table>
+        <thead><tr><th style="width:160px">分数区间</th><th style="width:150px">水平判定</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td class="score">&lt; 102</td><td><span class="badge b-slate">Pre-A1</span></td><td>总成绩不显示分数，基础薄弱，不建议直接走 KET 方向，相当于公立校小学中高年级水平</td></tr>
+          <tr><td class="score">102 – 139</td><td><span class="badge b-amber">A2</span></td><td>102–120 之间认可为 A2 水平，相当于公立校小学高年级～初中 1–2 年级水平</td></tr>
+          <tr><td class="score">140 – 152</td><td><span class="badge b-blue">B1 Grade C</span></td><td>PET 通过水平，相当于公立校初中毕业水平</td></tr>
+          <tr><td class="score">153 – 159</td><td><span class="badge b-blue">B1 Grade B</span></td><td>PET 优秀，相当于公立校初中毕业以上水平</td></tr>
+          <tr><td class="score">≥ 160</td><td><span class="badge b-green">B2 Grade A</span></td><td>PET 卓越，已摸到 B2 门槛，相当于公立校高中阶段水平</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 3. 课程推荐决策树 -->
+  <section>
+    <div class="sec-head">
+      <div class="sec-num">3</div>
+      <div><h2>课程推荐决策树（核心）</h2><div class="sub">以四项均分为主轴，KET 还会额外检查单项最低分</div></div>
+    </div>
+
+    <div class="tree">
+      <!-- KET -->
+      <div class="branch ket">
+        <div class="bh">KET 模考 <span class="pill">按均分分 4 档；单项 &lt; 82 优先触发</span></div>
+        <div class="rule is-pu">
+          <div class="cond">单项或均分 &lt; 82</div>
+          <div class="out">
+            <div class="course">Power Up 2 <span class="dur">（8 个月学完）</span></div>
+            <div class="note">成绩单不显示、未达 Pre-A1，基础非常薄弱 → 从 PU2 起步，再衔接 PU3、Think 1，稳扎稳打</div>
+          </div>
+        </div>
+        <div class="rule is-pu">
+          <div class="cond">均分 &lt; 110</div>
+          <div class="out">
+            <div class="course">Power Up 3 <span class="dur">（8 个月学完）</span></div>
+            <div class="note">A1 阶段，先用 PU3 打牢 A2 基础再进 Think 1；周期拉长，目标冲 KET 优秀甚至卓越</div>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="cond">均分 &lt; 120</div>
+          <div class="out">
+            <div class="course">Think 1 <span class="dur">（9 个月学完）</span></div>
+            <div class="note">已有 A1 基础，直接进 Think 1，9 个月目标 KET 通过</div>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="cond">均分 ≥ 120</div>
+          <div class="out">
+            <div class="course">先 KET 实考 ＋ Think 2 <span class="dur">（9 个月学完）</span></div>
+            <div class="note">已达 A2，先实考积累经验，同时报 Think 2 冲更好成绩，向 PET 迈进</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <b>为什么 KET 要额外看单项？</b> 均分可能被某一两个强项拉高，掩盖了某个单项「成绩单都不显示」的真实短板。只要任一单项 &lt; 82，就说明该维度基础特别差，必须从 Power Up 2 这种最基础的教材起步，避免硬推高阶课导致孩子跟不上、退费。
+      </div>
+
+      <!-- PET -->
+      <div class="branch pet">
+        <div class="bh">PET 模考 <span class="pill">按均分分 5 档</span></div>
+        <div class="rule is-pu">
+          <div class="cond">均分 &lt; 102</div>
+          <div class="out">
+            <div class="course">Power Up 3 <span class="dur">（8 个月学完）</span></div>
+            <div class="note">总成绩不显示、处于 Pre-A1 → 不直接上 KET 方向，先用 PU3 补 A2 基础再进 Think 1</div>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="cond">均分 &lt; 120</div>
+          <div class="out">
+            <div class="course">Think 1 <span class="dur">（9 个月学完）</span></div>
+            <div class="note">基础需加强，先用 Think 1 打牢 A2 词汇语法，为 PET 做准备</div>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="cond">均分 &lt; 135</div>
+          <div class="out">
+            <div class="course">Think 2 <span class="dur">（9 个月学完）</span></div>
+            <div class="note">已达 A2，9 个月目标 PET 通过，达到初中毕业水平</div>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="cond">均分 &lt; 140</div>
+          <div class="out">
+            <div class="course">Think 2 · 深耕路线 <span class="dur">（9 个月学完）</span></div>
+            <div class="note">接近 PET 通过线，基础好，把词汇语法学得更扎实，冲 PET 优秀甚至卓越</div>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="cond">均分 ≥ 140</div>
+          <div class="out">
+            <div class="course">Think 3 ＋ Think 4 <span class="dur">（每册 9 个月，FCE 方向）</span></div>
+            <div class="note">已达 B1，两册连报冲 FCE（B2），覆盖全部高中词汇语法，为高考全面准备</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 话术成稿结构 -->
+  <section>
+    <div class="sec-head">
+      <div class="sec-num">4</div>
+      <div><h2>话术成稿结构</h2><div class="sub">生成的每一段话术都由固定五大模块拼装，顾问可直接复制发送给家长</div></div>
+    </div>
+    <div class="mods">
+      <div class="mod"><div class="label">① 成绩分析</div><div class="body">报出四项均分、对应的<b>剑桥水平标签</b>，并用<b>公立校年级</b>来类比（如「相当于初中 1 年级的词汇量和阅读水平」），让家长一眼看懂孩子现在的位置。</div></div>
+      <div class="mod"><div class="label">② 推荐课程</div><div class="body">由决策树给出<b>具体课程 + 学完时长</b>，并解释为什么推这一册：基础情况、备考周期、目标成绩。</div></div>
+      <div class="mod"><div class="label">③ 薄弱单项分析</div><div class="body">自动找出<b>最薄弱的 1–2 个单项</b>，针对听/说/读/写给出该课程阶段的<b>具体提升方法</b>（记笔记、1+1 口语原则、真题完形、写作字数进阶等）。</div></div>
+      <div class="mod"><div class="label">④ 为什么选小班课</div><div class="body">三条固定卖点：<b>以考促学</b>、<b>12 人小班 + 助教跟盯</b>、<b>系统长线提升</b>，强化报班的价值感。</div></div>
+      <div class="mod"><div class="label">⑤ 学习目标</div><div class="body">给出学完后的<b>可量化预期</b>：达到的剑桥级别、对应公立校年级、能通过的考试，把「报这门课能换来什么」讲清楚。</div></div>
+    </div>
+  </section>
+
+  <!-- 5. 业务依据 / 卖点 -->
+  <section>
+    <div class="sec-head">
+      <div class="sec-num">5</div>
+      <div><h2>能力进阶与核心卖点</h2></div>
+    </div>
+
+    <div class="card">
+      <div class="lead"><b>学完后的水平对应（用于写「学习目标」，口径统一）</b></div>
+      <div class="map">
+        <div class="row"><div class="from">Think 1 学完并通过 KET</div><div class="ar">→</div><div class="to">初一左右水平</div></div>
+        <div class="row"><div class="from">从 PU3 起步 → 学完 Think 1</div><div class="ar">→</div><div class="to">KET 优秀卓越 · 初二水平</div></div>
+        <div class="row"><div class="from">Think 2 学完并通过 PET</div><div class="ar">→</div><div class="to">初中毕业水平</div></div>
+        <div class="row"><div class="from">Think 3 ＋ Think 4 学完</div><div class="ar">→</div><div class="to">高中毕业 · FCE（B2）水平</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="lead"><b>三大报班卖点（话术模块④的固定内容）</b></div>
+      <div class="why">
+        <div class="c"><div class="n">卖点 01</div><div class="t">以考促学</div><div class="d">剑桥证书含金量高、国内多校认可，对中高考英语有直接帮助；有明确考试目标，孩子学习动力更足。</div></div>
+        <div class="c"><div class="n">卖点 02</div><div class="t">小班 + 助教</div><div class="d">12 人小班、中教主讲、助教全程跟盯作业、课上专项讲评错题，听说读写四维系统训练 + 应试技巧两手抓。</div></div>
+        <div class="c"><div class="n">卖点 03</div><div class="t">系统长线提升</div><div class="d">长周期 + 全程跟盯，语法词汇真正系统性提升，不是临时刷题，而是把基础扎扎实实建起来。</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="lead"><b>关键阈值背后的招生逻辑</b></div>
+      <ul class="clean">
+        <li><b>宁可从低阶起步</b>：&lt; 82（KET）/ &lt; 102（PET）一律先上 Power Up，不硬推高阶课。基础不牢硬推 = 孩子跟不上、家长退费，从低阶起步反而留得住、口碑好。</li>
+        <li><b>把「周期拉长」讲成卖点</b>：先学 Power Up 3 周期虽然多半年，但节奏从容、基础更稳，目标从「KET 通过」升级为「KET 优秀甚至卓越」——多花的时间换来的是更高的成绩与更稳的能力。</li>
+        <li><b>用公立校年级做锚</b>：把剑桥级别翻译成家长最熟悉的「小学 / 初中 / 高中年级」，让能力跃升「看得见、算得清」。</li>
+        <li><b>目标可量化</b>：每段话术都落到具体证书 + 对应年级，家长清楚「投入这段学习能换来什么」。</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="foot">剑桥小班课 · 推课话术逻辑说明 · 内部资料</div>
+
+</div>
+</body>
+</html>
