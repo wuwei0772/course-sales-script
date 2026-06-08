@@ -354,7 +354,7 @@ function getCourseAndGoal(avg) {
       course: `推荐方向：先参加 KET 实考 + 报名 Think 2 小班课
 
 孩子目前已经达到 A2 的水平，可以先安排参加一次 KET 正式考试，检验真实水平、积累实考经验。同时报名 Think 2 小班课，经过9个月的系统学习，目标是 KET 通过，甚至冲击更好的成绩。`,
-      goal: `通过9个月的 Think 2 学习，孩子的英语水平大概能达到初中1–2年级的程度，实现约1个年级的能力跃升，同时在 KET 考试中取得通过或更好的成绩。`,
+      goal: `通过9个月的 Think 2 学习，孩子在 KET 考试中能取得通过甚至更好的成绩；英语水平也会稳步向 PET（B1）迈进，为后续冲击 PET、达到初中毕业的水平打下扎实基础。`,
     };
   }
 
@@ -369,13 +369,13 @@ function getCourseAndGoal(avg) {
     course: `推荐课程：Think 2 小班课
 
 孩子目前已达到 A2 的水平，推荐报名 Think 2 小班课。经过9个月的系统学习，目标是达到 PET 通过的水平。`,
-    goal: `学完 Think 2、顺利通过 PET 之后，孩子的英语水平能达到初中3年级的程度。PET 是剑桥 B1 级证书，含金量很高，相当于一口气实现了好几个年级的能力跃升，远快于校内的进阶速度。`,
+    goal: `学完 Think 2、顺利通过 PET 之后，孩子的英语水平能达到初中毕业的程度。PET 是剑桥 B1 级证书，含金量很高，相当于一口气实现了好几个年级的能力跃升，远快于校内的进阶速度。`,
   };
   if (avg < 140) return {
     course: `推荐课程：Think 2 小班课（深耕路线）
 
 孩子成绩已经接近 PET 的通过线，基础很好。推荐选择 Think 2 深耕路线，把词汇和语法的知识学得更加扎实，目标不只是 PET 通过，而是冲击 PET 优秀（Grade B）甚至卓越（Grade A）的水平。`,
-    goal: `通过9个月 Think 2 的深耕学习，孩子的英语水平能在初中1–2年级的区间实现系统提升，在 PET 考试中取得优秀或卓越的成绩。基础越扎实，后续提升空间越大。`,
+    goal: `通过9个月 Think 2 的深耕学习，孩子的英语水平能达到初中毕业的程度，并在 PET 考试中取得优秀或卓越的成绩。基础越扎实，后续提升空间越大。`,
   };
   return { // avg >= 140
     course: `推荐课程：Think 3 + Think 4 小班课（FCE方向）
@@ -389,10 +389,20 @@ function generate() {
   const avg = getAvg();
   if (!examType || avg === null) return;
 
-  // Find weakest subject(s) — include the second-lowest too if it's close (≤5 分)
+  // Find weakest subject(s)
   const order = [0, 1, 2, 3].sort((a, b) => scores[a] - scores[b]);
-  const weakIdxs = [order[0]];
-  if (scores[order[1]] - scores[order[0]] <= 5) weakIdxs.push(order[1]);
+  const maxScore = scores[order[3]];
+  const minScore = scores[order[0]];
+
+  // If scores are very balanced (max - min ≤ 3), default to listening & reading
+  let weakIdxs;
+  if (maxScore - minScore <= 3) {
+    weakIdxs = [0, 2]; // 听力(0) & 阅读(2)
+  } else {
+    // Otherwise, find weakest subject(s) — include the second-lowest too if it's close (≤5 分)
+    weakIdxs = [order[0]];
+    if (scores[order[1]] - scores[order[0]] <= 5) weakIdxs.push(order[1]);
+  }
 
   // 推 Power Up 3 的情况：KET 均分 < 110
   const isPU3 = examType === 'KET' && avg < 110;
