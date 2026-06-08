@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>剑桥小班课推课话术</title>
+<style>
+/* ── 内联工具样式（替代 Tailwind CDN，无外部依赖，国内可正常加载） ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;border:0 solid #e2e8f0;}
+html{-webkit-text-size-adjust:100%;}
+body{-webkit-tap-highlight-color:transparent;line-height:1.5;}
+button{font:inherit;color:inherit;background:none;cursor:pointer;}
+input{font:inherit;color:inherit;}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button{opacity:1;height:28px;}
+
+/* layout */
+.min-h-screen{min-height:100vh;}
+.max-w-xl{max-width:36rem;}
+.mx-auto{margin-left:auto;margin-right:auto;}
+.flex{display:flex;}
+.grid{display:grid;}
+.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr));}
+.hidden{display:none;}
+.flex-1{flex:1 1 0%;}
+.flex-shrink-0{flex-shrink:0;}
+.items-center{align-items:center;}
+.items-start{align-items:flex-start;}
+.justify-between{justify-content:space-between;}
+.gap-2{gap:.5rem;}
+.gap-3{gap:.75rem;}
+.space-y-2 > * + *{margin-top:.5rem;}
+.space-y-2\.5 > * + *{margin-top:.625rem;}
+.text-center{text-align:center;}
+
+/* sizing */
+.w-full{width:100%;}
+.w-8{width:2rem;}
+.w-24{width:6rem;}
+.w-4{width:1rem;}
+.h-4{height:1rem;}
+
+/* spacing */
+.p-3{padding:.75rem;}.p-4{padding:1rem;}
+.px-2{padding-left:.5rem;padding-right:.5rem;}
+.px-3{padding-left:.75rem;padding-right:.75rem;}
+.px-4{padding-left:1rem;padding-right:1rem;}
+.py-0\.5{padding-top:.125rem;padding-bottom:.125rem;}
+.py-1\.5{padding-top:.375rem;padding-bottom:.375rem;}
+.py-2{padding-top:.5rem;padding-bottom:.5rem;}
+.py-4{padding-top:1rem;padding-bottom:1rem;}
+.py-6{padding-top:1.5rem;padding-bottom:1.5rem;}
+.pt-3{padding-top:.75rem;}
+.pb-20{padding-bottom:5rem;}
+.mb-3{margin-bottom:.75rem;}.mb-4{margin-bottom:1rem;}.mb-5{margin-bottom:1.25rem;}
+.mt-0\.5{margin-top:.125rem;}.mt-2{margin-top:.5rem;}.mt-4{margin-top:1rem;}
+
+/* radius */
+.rounded-lg{border-radius:.5rem;}
+.rounded-xl{border-radius:.75rem;}
+.rounded-2xl{border-radius:1rem;}
+.rounded-full{border-radius:9999px;}
+
+/* borders */
+.border{border-width:1px;}
+.border-2{border-width:2px;}
+.border-t{border-top-width:1px;}
+.border-slate-100{border-color:#f1f5f9;}
+.border-slate-200{border-color:#e2e8f0;}
+.border-slate-300{border-color:#cbd5e1;}
+.border-blue-300{border-color:#93c5fd;}
+.border-blue-500{border-color:#3b82f6;}
+.border-yellow-300{border-color:#fde047;}
+.border-orange-300{border-color:#fdba74;}
+.border-green-300{border-color:#86efac;}
+
+/* backgrounds */
+.bg-white{background-color:#fff;}
+.bg-slate-50{background-color:#f8fafc;}
+.bg-slate-100{background-color:#f1f5f9;}
+.bg-blue-50{background-color:#eff6ff;}
+.bg-blue-500{background-color:#3b82f6;}
+.bg-blue-600{background-color:#2563eb;}
+.bg-yellow-50{background-color:#fefce8;}
+.bg-orange-50{background-color:#fff7ed;}
+.bg-green-50{background-color:#f0fdf4;}
+
+/* text */
+.font-sans{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
+.text-xs{font-size:.75rem;line-height:1rem;}
+.text-sm{font-size:.875rem;line-height:1.25rem;}
+.text-lg{font-size:1.125rem;line-height:1.75rem;}
+.text-xl{font-size:1.25rem;line-height:1.75rem;}
+.text-2xl{font-size:1.5rem;line-height:2rem;}
+.font-medium{font-weight:500;}
+.font-semibold{font-weight:600;}
+.font-bold{font-weight:700;}
+.leading-relaxed{line-height:1.625;}
+.tracking-wide{letter-spacing:.025em;}
+.whitespace-pre-wrap{white-space:pre-wrap;}
+.text-white{color:#fff;}
+.text-slate-400{color:#94a3b8;}
+.text-slate-500{color:#64748b;}
+.text-slate-600{color:#475569;}
+.text-slate-700{color:#334155;}
+.text-slate-800{color:#1e293b;}
+.text-blue-600{color:#2563eb;}
+.text-blue-700{color:#1d4ed8;}
+.text-yellow-700{color:#a16207;}
+.text-orange-700{color:#c2410c;}
+.text-green-600{color:#16a34a;}
+.text-green-700{color:#15803d;}
+
+/* effects */
+.shadow-sm{box-shadow:0 1px 2px 0 rgba(0,0,0,.05);}
+.shadow-md{box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);}
+.transition-all{transition:all .15s ease;}
+.transition-colors{transition:background-color .15s ease,color .15s ease,border-color .15s ease;}
+.select-all{user-select:all;}
+
+/* states */
+.hover\:bg-blue-700:hover{background-color:#1d4ed8;}
+.active\:bg-blue-100:active{background-color:#dbeafe;}
+.active\:bg-blue-800:active{background-color:#1e40af;}
+.active\:scale-95:active{transform:scale(.95);}
+.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px;}
+.focus\:border-blue-400:focus{border-color:#60a5fa;}
+.focus\:ring-1:focus{box-shadow:0 0 0 1px #93c5fd;}
+.focus\:ring-blue-300:focus{box-shadow:0 0 0 1px #93c5fd;}
+</style>
+</head>
+<body class="bg-slate-100 min-h-screen font-sans text-slate-800">
+<div class="max-w-xl mx-auto px-4 py-6 pb-20">
+
+  <!-- Header -->
+  <div class="mb-5">
+    <h1 class="text-xl font-bold">剑桥小班课推课话术</h1>
+    <p class="text-sm text-slate-500 mt-0.5">输入模考成绩，一键生成微信话术</p>
+  </div>
+
+  <!-- Step 1: Exam type -->
+  <div class="bg-white rounded-2xl p-4 mb-3 shadow-sm">
+    <p class="text-xs font-semibold text-slate-400 mb-3 tracking-wide">STEP 1 · 考试类型</p>
+    <div class="grid grid-cols-2 gap-3">
+      <button id="btn-KET" onclick="selectExam('KET')"
+        class="py-4 rounded-xl border-2 border-slate-200 transition-all active:scale-95">
+        <div class="text-lg font-bold">KET</div>
+        <div class="text-xs text-slate-400 mt-0.5">A2 Key</div>
+      </button>
+      <button id="btn-PET" onclick="selectExam('PET')"
+        class="py-4 rounded-xl border-2 border-slate-200 transition-all active:scale-95">
+        <div class="text-lg font-bold">PET</div>
+        <div class="text-xs text-slate-400 mt-0.5">B1 Preliminary</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Step 2: Scores -->
+  <div class="bg-white rounded-2xl p-4 mb-3 shadow-sm">
+    <p class="text-xs font-semibold text-slate-400 mb-3 tracking-wide">STEP 2 · 模考成绩</p>
+    <div class="space-y-2.5" id="score-rows"></div>
+    <div id="avg-row" class="hidden mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+      <span class="text-sm font-medium text-slate-600">四项均分</span>
+      <div class="flex items-center gap-2">
+        <span id="avg-val" class="text-2xl font-bold"></span>
+        <span id="avg-badge" class="text-xs px-2 py-0.5 rounded-full font-semibold border"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Generate button -->
+  <button id="gen-btn" onclick="generate()"
+    class="hidden w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-4 rounded-2xl shadow-md transition-all active:scale-95 mb-4">
+    生成推课话术 →
+  </button>
+
+  <!-- Output -->
+  <div id="output-panel" class="hidden bg-white rounded-2xl p-4 shadow-sm">
+    <div class="flex items-center justify-between mb-3">
+      <p class="text-xs font-semibold text-slate-400 tracking-wide">推课话术（可直接复制发送）</p>
+      <button onclick="copyScript()"
+        class="text-xs text-blue-600 font-medium px-3 py-1.5 bg-blue-50 rounded-lg active:bg-blue-100 transition-colors">
+        📋 复制全文
+      </button>
+    </div>
+    <div id="script-text"
+      class="text-sm text-slate-700 leading-relaxed whitespace-pre-wrap bg-slate-50 rounded-xl p-3 select-all"></div>
+    <div id="copy-msg" class="hidden text-center text-green-600 text-xs mt-2 font-medium">✓ 已复制到剪贴板</div>
+  </div>
+
+</div>
+
+<script>
+const SUBJECTS = ['听力', '口语', '阅读', '写作'];
+let examType = null;
+let scores = [null, null, null, null];
+
+// ── Level helpers ──────────────────────────────────────────
+function getLevel(score, exam) {
+  if (score == null || isNaN(score)) return null;
+  exam = exam || examType;
+  if (exam === 'PET') {
+    // B1 Preliminary 剑桥量表 120–170（官方）
+    if (score < 140) return { label: 'A2',         bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-300' };
+    if (score < 153) return { label: 'B1 Grade C', bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-300' };
+    if (score < 160) return { label: 'B1 Grade B', bg: 'bg-blue-50',   text: 'text-blue-700',   border: 'border-blue-300' };
+    return               { label: 'B2 Grade A', bg: 'bg-green-50',  text: 'text-green-700',  border: 'border-green-300' };
+  }
+  // A2 Key 剑桥量表 100–150（官方）
+  if (score < 100) return { label: 'Pre-A1', bg: 'bg-slate-100', text: 'text-slate-500', border: 'border-slate-300' };
+  if (score < 120) return { label: 'A1',      bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-300' };
+  if (score < 133) return { label: 'A2 Grade C', bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-300' };
+  if (score < 140) return { label: 'A2 Grade B', bg: 'bg-blue-50',   text: 'text-blue-700',   border: 'border-blue-300' };
+  return               { label: 'B1 Grade A', bg: 'bg-green-50',  text: 'text-green-700',  border: 'border-green-300' };
+}
+
+function getCurrentGrade(avg) {
+  if (avg < 100) return '小学3–4年级';
+  if (avg < 120) return '小学5–6年级';
+  if (avg < 133) return '初中1年级';
+  if (avg < 140) return '初中1–2年级';
+  return '初中2–3年级';
+}
+
+// ── Score rows ─────────────────────────────────────────────
+function initScoreRows() {
+  document.getElementById('score-rows').innerHTML = SUBJECTS.map((s, i) => `
+    <div class="flex items-center gap-3">
+      <span class="text-sm font-medium text-slate-600 w-8 flex-shrink-0">${s}</span>
+      <input type="number" min="60" max="170" placeholder="输入分数"
+        id="score-${i}"
+        oninput="onScoreChange(${i}, this.value)"
+        class="flex-1 border border-slate-200 rounded-lg px-3 py-2 text-sm text-center focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-300 transition-all"/>
+      <span id="level-${i}" class="text-xs px-2 py-0.5 rounded-full font-semibold w-24 text-center border flex-shrink-0"></span>
+    </div>
+  `).join('');
+}
+
+function onScoreChange(idx, val) {
+  scores[idx] = val === '' ? null : parseFloat(val);
+  refreshUI();
+}
+
+function updateBadges() {
+  scores.forEach((sc, idx) => {
+    const lv = getLevel(sc);
+    const el = document.getElementById(`level-${idx}`);
+    if (!el) return;
+    if (lv) {
+      el.textContent = lv.label;
+      el.className = `text-xs px-2 py-0.5 rounded-full font-semibold w-24 text-center border ${lv.bg} ${lv.text} ${lv.border}`;
+    } else {
+      el.textContent = '';
+      el.className = 'text-xs px-2 py-0.5 rounded-full font-semibold w-24 text-center border';
+    }
+  });
+}
+
+// ── Avg ────────────────────────────────────────────────────
+function getAvg() {
+  const valid = scores.filter(s => s !== null && !isNaN(s));
+  if (valid.length < 4) return null;
+  return valid.reduce((a, b) => a + b, 0) / 4;
+}
+
+// ── Exam select ────────────────────────────────────────────
+function selectExam(type) {
+  examType = type;
+  ['KET','PET'].forEach(t => {
+    const btn = document.getElementById(`btn-${t}`);
+    btn.className = `py-4 rounded-xl border-2 transition-all active:scale-95 ${
+      t === type ? 'border-blue-500 bg-blue-50' : 'border-slate-200'
+    }`;
+  });
+  document.getElementById('output-panel').classList.add('hidden');
+  refreshUI();
+}
+
+// ── Master refresh ─────────────────────────────────────────
+function refreshUI() {
+  const avg = getAvg();
+  updateBadges();
+
+  // Avg row
+  const avgRow = document.getElementById('avg-row');
+  if (avg !== null) {
+    avgRow.classList.remove('hidden');
+    document.getElementById('avg-val').textContent = avg.toFixed(1);
+    const lv = getLevel(avg);
+    const badge = document.getElementById('avg-badge');
+    badge.textContent = lv.label;
+    badge.className = `text-xs px-2 py-0.5 rounded-full font-semibold border ${lv.bg} ${lv.text} ${lv.border}`;
+  } else {
+    avgRow.classList.add('hidden');
+  }
+
+  // Generate button
+  const genBtn = document.getElementById('gen-btn');
+  const ready = examType && avg !== null;
+  ready ? genBtn.classList.remove('hidden') : genBtn.classList.add('hidden');
+}
+
+// ── Weakness text ──────────────────────────────────────────
+// level: 'ket'（Power Up 3 / Think 1）| 'pet'（Think 2）| 'fce'（Think 3+4）
+function getWeaknessText(subjectIdx, level, isPU3) {
+  const name = SUBJECTS[subjectIdx];
+  const examWord = level === 'fce' ? 'FCE' : level === 'pet' ? 'PET' : 'KET';
+
+  const listening = `听力这块，课程的核心抓手是培养"记笔记"的习惯——训练孩子边听边记关键信息，再用笔记复述文本主要内容，逐步提升答题正确率。同时会专项训练"听前审题+预判内容"的应试技巧，帮孩子减少因为信息量大跟不上节奏而失分的情况。`;
+
+  const speaking = {
+    ket: `口语这块，KET 阶段老师会专门练习"1+1 原则"：先用一句话直接回答问题，再用一句话进行拓展。这个阶段主要练的是口语的流利度，让孩子先敢说、能顺畅地表达；每单元都有结合真题题型的专项练习，从应试角度系统提升。`,
+    pet: `口语这块，PET 阶段在流利度的基础上进一步增强准确度：教孩子用"原因+举例+对比"的方式让回答更有逻辑性；每单元都有结合真题题型的专项口语练习，帮孩子在较长篇幅的题目中保持条理和流畅。`,
+    fce: `口语这块，FCE 阶段要求孩子就一个话题展开更长、更有深度的表达：学会陈述观点、给出论证、进行比较和推测，流利度和准确度两手抓；每单元都有结合真题题型的专项口语练习，对标剑桥 B2 级的考试要求。`,
+  };
+
+  const reading = isPU3
+    ? `阅读这块，Power Up 3 阶段主要按原版教材的逻辑来提升：从教材文本出发，带孩子练习联系上下文猜词义、抓段落细节和主旨大意，系统打牢阅读理解能力。等进入 Think 1 教材后，我们会在独家研发的学习手册中增加历年真题练习（包括真题的完形填空和阅读理解），帮孩子积累 KET 必考的单词、短语和固定搭配，扩大词汇量，进而提高考试水平和应试能力，老师也会在课上专门讲评。`
+    : `阅读这块，课程首先从原版教材文本出发，带孩子练习联系上下文猜词义、抓段落细节和主旨大意，系统提升孩子的阅读理解能力。在此基础上，我们还会在独家研发的学习手册中布置历年真题练习（包括真题的完形填空和阅读理解），帮孩子积累 ${examWord} 必考的单词、短语和固定搭配，扩大词汇量，进而提高考试水平和应试能力，老师也会在课上专门讲评。`;
+
+  const writing = {
+    ket: `写作这块，Think 教材每3次课安排一次写作练习，KET 阶段重点攻克邮件写作、故事写作和动词过去式的使用，结合真题题型进行针对性练笔，帮孩子在这个维度实现扎实提升。`,
+    pet: `写作这块，PET 阶段篇幅要求从30词提升到100词。课程会手把手教孩子如何展开内容：写邮件给出理由、写文章举例子、写故事加入人物对话和情感描写，用多种过去时丰富内容、达到字数要求。每3周安排一次大作文练习，助教全程批改跟进。`,
+    fce: `写作这块，FCE 阶段要求在一个半小时内完成两篇 150–190 字的大作文，体裁更丰富（议论文、报告、评论等）。课程会手把手教孩子搭建文章结构、展开论证、丰富词汇和句式，定期安排大作文练习、助教全程批改跟进，写作要求高于高考英语。`,
+  };
+
+  const map = {
+    '听力': listening,
+    '口语': speaking[level] || speaking.ket,
+    '阅读': reading,
+    '写作': writing[level] || writing.ket,
+  };
+  return map[name] || '';
+}
+
+// ── Script generator ───────────────────────────────────────
+function getCourseAndGoal(avg) {
+  if (examType === 'KET') {
+    if (avg < 110) return {
+      course: `推荐课程：Power Up 3 小班课
+
+孩子目前的词汇和语法基础还需要进一步夯实，推荐先学 Power Up 3。Power Up 3 对应 A2 水平，教材有故事、有漫画，孩子可以在相对从容的节奏里把词汇和语法基础打扎实，学完之后顺利衔接 Think 1。因为备考周期拉长了，考试目标也不只是 KET 通过，而是冲击 KET 优秀甚至卓越的成绩。
+
+补充一点：如果孩子比较着急出分，其实也可以直接学 Think 1，但这样提分的难度、学习强度都会更大——背单词、学语法，课后都需要孩子付出更多的努力。相比之下，学 Power Up 3 学习周期会相应拉长半年多，节奏也可以更加从容一些，基础打得更稳。`,
+      goal: `通过 Power Up 3 的学习，孩子的英语水平能稳步提升；之后进入 Think 1，因为备考周期拉长了，目标不只是 KET 通过，而是冲击 KET 优秀（Grade B）甚至卓越（Grade A）的成绩，相当于初中2年级的水平。循序渐进，基础打得更扎实，提升空间也更大。`,
+    };
+    if (avg < 120) return {
+      course: `推荐课程：Think 1 小班课
+
+孩子目前已有一定的 A1 基础，可以直接进入 Think 1。经过9个月的系统学习，目标是达到 KET 通过的水平。`,
+      goal: `学完 Think 1 之后，孩子的英语水平大概能达到初中1年级的程度——也就是说，9个月的时间，可以实现大约1–2个年级的能力跃升，同时顺利通过 KET 考试。`,
+    };
+    return { // avg >= 120
+      course: `推荐方向：先参加 KET 实考 + 报名 Think 2 小班课
+
+孩子目前已经达到 A2 的水平，可以先安排参加一次 KET 正式考试，检验真实水平、积累实考经验。同时报名 Think 2 小班课，经过9个月的系统学习，目标是 KET 通过，甚至冲击更好的成绩。`,
+      goal: `通过9个月的 Think 2 学习，孩子的英语水平大概能达到初中1–2年级的程度，实现约1个年级的能力跃升，同时在 KET 考试中取得通过或更好的成绩。`,
+    };
+  }
+
+  // PET
+  if (avg < 120) return {
+    course: `推荐课程：Think 1 小班课
+
+孩子目前 PET 模考成绩显示基础还需加强，建议先通过 Think 1 系统打好 A2 的词汇、语法基础，为后续冲击 PET 做好准备。`,
+    goal: `学完 Think 1 之后，孩子的英语水平大概能达到初中1年级的程度。9个月时间，实现大约1–2个年级的能力跃升，同时为后续 PET 备考打下扎实基础。`,
+  };
+  if (avg < 135) return {
+    course: `推荐课程：Think 2 小班课
+
+孩子目前已达到 A2 的水平，推荐报名 Think 2 小班课。经过9个月的系统学习，目标是达到 PET 通过的水平。`,
+    goal: `学完 Think 2、顺利通过 PET 之后，孩子的英语水平能达到初中3年级的程度。PET 是剑桥 B1 级证书，含金量很高，相当于一口气实现了好几个年级的能力跃升，远快于校内的进阶速度。`,
+  };
+  if (avg < 140) return {
+    course: `推荐课程：Think 2 小班课（深耕路线）
+
+孩子成绩已经接近 PET 的通过线，基础很好。推荐选择 Think 2 深耕路线，把词汇和语法的知识学得更加扎实，目标不只是 PET 通过，而是冲击 PET 优秀（Grade B）甚至卓越（Grade A）的水平。`,
+    goal: `通过9个月 Think 2 的深耕学习，孩子的英语水平能在初中1–2年级的区间实现系统提升，在 PET 考试中取得优秀或卓越的成绩。基础越扎实，后续提升空间越大。`,
+  };
+  return { // avg >= 140
+    course: `推荐课程：Think 3 + Think 4 小班课（FCE方向）
+
+孩子目前已经达到 B1 的水平，成绩非常好！推荐 Think 3 和 Think 4 两册连报，朝 FCE（剑桥 B2 级）的方向发展。两册学完之后，会覆盖全部的高中词汇和语法，达到高中毕业的水平；写作部分要求在一个半小时之内完成两篇 150–190 字的大作文，要求是高于高考英语的，能够全方位地为高考做好充分准备。`,
+    goal: `Think 3 + Think 4 两册连读学完后，孩子会覆盖全部的高中词汇和语法，达到高中毕业的英语水平，达到 FCE（剑桥 B2 级）的水平。FCE 含金量很高，写作要求高于高考英语，可以为孩子的高考做好全方位、充分的准备。`,
+  };
+}
+
+function generate() {
+  const avg = getAvg();
+  if (!examType || avg === null) return;
+
+  // Find weakest subject(s) — include the second-lowest too if it's close (≤5 分)
+  const order = [0, 1, 2, 3].sort((a, b) => scores[a] - scores[b]);
+  const weakIdxs = [order[0]];
+  if (scores[order[1]] - scores[order[0]] <= 5) weakIdxs.push(order[1]);
+
+  // 推 Power Up 3 的情况：KET 均分 < 110
+  const isPU3 = examType === 'KET' && avg < 110;
+
+  // 推荐课程对应的级别，单项提升话术按级别给（而非考试类型）
+  // KET: <120 → Think 1 / PU3（ket）; >=120 → Think 2（pet）
+  // PET: <120 → Think 1（ket）; 120–140 → Think 2（pet）; >=140 → Think 3+4（fce）
+  let level;
+  if (examType === 'KET') {
+    level = avg < 120 ? 'ket' : 'pet';
+  } else {
+    level = avg < 120 ? 'ket' : avg < 140 ? 'pet' : 'fce';
+  }
+
+  let weakBlock;
+  if (weakIdxs.length === 1) {
+    const i = weakIdxs[0];
+    weakBlock = `四项里，${SUBJECTS[i]}是孩子目前相对薄弱的地方（${Math.round(scores[i])}分）。${getWeaknessText(i, level, isPU3)}`;
+  } else {
+    const [a, b] = weakIdxs;
+    weakBlock = `四项里，${SUBJECTS[a]}（${Math.round(scores[a])}分）和${SUBJECTS[b]}（${Math.round(scores[b])}分）是孩子目前相对薄弱的两项。
+
+${getWeaknessText(a, level, isPU3)}
+
+${getWeaknessText(b, level, isPU3)}`;
+  }
+
+  const currentGrade = getCurrentGrade(avg);
+  const levelStr = getLevel(avg).label;
+  const { course, goal } = getCourseAndGoal(avg);
+
+  const script =
+`【成绩分析】
+孩子这次 ${examType} 模考四项均分是 ${avg.toFixed(1)} 分，对应剑桥 ${levelStr} 的水平。用公立校来类比，大概相当于${currentGrade}的英语词汇量和阅读水平。
+
+【推荐课程】
+${course}
+
+${weakBlock}
+
+【为什么选小班课】
+① 以考促学：剑桥英语证书含金量高，在国内很多学校都被认可，对中高考英语也有直接的帮助。有了明确的考试目标，孩子学习的动力也会更足，学习效果会更好。
+
+② 小班制教学：我们的小班课是12人的小班，中教主讲老师上课，配有助教全程跟盯作业，课上专门针对错题进行讲评。孩子在听、说、读、写四个维度都会跟着原版教材系统练习，同时有专项应试技巧的训练，能力提升和考试导向两手抓。
+
+③ 系统长线提升：长周期的学习加上老师全程跟盯，孩子的语法和词汇能够实现真正系统性的提升，不是临时刷题，而是把基础扎扎实实地建起来。
+
+【学习目标】
+${goal}`;
+
+  document.getElementById('script-text').textContent = script;
+  document.getElementById('output-panel').classList.remove('hidden');
+  setTimeout(() => {
+    document.getElementById('output-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+// ── Copy ───────────────────────────────────────────────────
+function copyScript() {
+  const text = document.getElementById('script-text').textContent;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(showCopyMsg);
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showCopyMsg();
+  }
+}
+
+function showCopyMsg() {
+  const msg = document.getElementById('copy-msg');
+  msg.classList.remove('hidden');
+  setTimeout(() => msg.classList.add('hidden'), 2000);
+}
+
+// ── Init ───────────────────────────────────────────────────
+initScoreRows();
+</script>
+</body>
+</html>
