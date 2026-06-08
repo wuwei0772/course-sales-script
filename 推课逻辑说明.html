@@ -26,6 +26,7 @@
 
   /* hero */
   .hero{
+    position:relative;
     background:linear-gradient(135deg,#1e3a8a,#2563eb 60%,#3b82f6);
     color:#fff; padding:56px 20px 48px; text-align:center;
   }
@@ -155,14 +156,35 @@
 
   .foot{margin-top:54px; text-align:center; color:var(--mut); font-size:12.5px;}
 
+  /* 下载按钮：固定在标题区右上角（hero 内），随页面滚动而非悬浮顶层 */
   .topbtn{
-    position:fixed; top:18px; right:18px; z-index:50;
-    display:inline-flex; align-items:center; gap:6px;
-    padding:9px 16px; border-radius:999px; cursor:pointer;
+    position:absolute; top:16px; right:16px; z-index:5;
+    display:inline-flex; align-items:center; cursor:pointer;
+    padding:9px 18px; border-radius:999px;
     background:#fff; color:var(--blue); font-size:13.5px; font-weight:700;
-    border:1px solid var(--blue-bd); box-shadow:0 4px 14px rgba(15,23,42,.12);
+    border:1px solid var(--blue-bd); box-shadow:0 4px 14px rgba(15,23,42,.18);
   }
   .topbtn:active{transform:scale(.96);}
+  .topbtn[disabled]{opacity:.6; cursor:default;}
+
+  /* 生成图片/PDF 时隐藏交互元素 */
+  body.capturing .topbtn, body.capturing #imgOverlay{display:none !important;}
+
+  /* 手机端长图预览浮层 */
+  #imgOverlay{
+    position:fixed; inset:0; z-index:100; background:rgba(15,23,42,.88);
+    display:none; flex-direction:column; align-items:center;
+    padding:18px 14px; overflow:auto;
+  }
+  #imgOverlay.show{display:flex;}
+  #imgOverlay .tip{color:#fff; font-size:14px; font-weight:600; margin-bottom:12px; text-align:center;}
+  #imgOverlay img{max-width:100%; border-radius:10px; box-shadow:0 8px 30px rgba(0,0,0,.4);}
+  #imgOverlay .ov-actions{display:flex; gap:10px; margin:14px 0 6px;}
+  #imgOverlay .ov-actions a, #imgOverlay .ov-actions button{
+    padding:9px 18px; border-radius:999px; font-size:13.5px; font-weight:700;
+    background:#fff; color:var(--blue); border:1px solid var(--blue-bd); text-decoration:none; cursor:pointer;
+  }
+  #imgOverlay .ov-actions .close{background:transparent; color:#fff; border-color:rgba(255,255,255,.5);}
 
   @media print{
     .topbtn{display:none !important;}
@@ -204,9 +226,8 @@
 </head>
 <body>
 
-<button class="topbtn" onclick="window.print()">⬇ 下载 PDF</button>
-
 <div class="hero">
+  <button class="topbtn" id="dlBtn" onclick="downloadDoc()">下载</button>
   <h1>剑桥小班课推课话术 · 概览</h1>
   <p>销售顾问只需录入孩子的 KET / PET 模考四项分数，系统即可自动判定水平、匹配课程、生成可直接发送的推课话术。本页说明这套逻辑的每一层判断依据。</p>
 </div>
@@ -413,5 +434,80 @@
   <div class="foot">剑桥小班课 · 推课话术逻辑说明 · 内部资料</div>
 
 </div>
+
+<!-- 手机端长图预览浮层 -->
+<div id="imgOverlay">
+  <div class="tip">长按下方图片即可保存到相册</div>
+  <img id="ovImg" alt="推课逻辑长图">
+  <div class="ov-actions">
+    <a id="ovSave" download="剑桥推课逻辑说明.png">下载图片</a>
+    <button class="close" onclick="document.getElementById('imgOverlay').classList.remove('show')">关闭</button>
+  </div>
+</div>
+
+<script src="vendor/html2canvas.min.js"></script>
+<script src="vendor/jspdf.umd.min.js"></script>
+<script>
+function isMobileDevice(){
+  return /Android|iPhone|iPad|iPod|HarmonyOS|Mobile/i.test(navigator.userAgent)
+      || window.matchMedia('(max-width:680px)').matches;
+}
+
+async function renderCanvas(){
+  document.body.classList.add('capturing');
+  // 回到顶部，确保 html2canvas 从页头完整截取（含标题区背景）
+  window.scrollTo(0, 0);
+  // 等两帧，确保按钮已隐藏、滚动已生效
+  await new Promise(r => requestAnimationFrame(()=>requestAnimationFrame(r)));
+  const canvas = await html2canvas(document.body, {
+    backgroundColor: '#ffffff',
+    scale: Math.min(2, window.devicePixelRatio || 1.5) < 1.5 ? 1.5 : 2,
+    useCORS: true,
+    windowWidth: document.documentElement.scrollWidth,
+    windowHeight: document.documentElement.scrollHeight
+  });
+  document.body.classList.remove('capturing');
+  return canvas;
+}
+
+async function downloadDoc(){
+  const btn = document.getElementById('dlBtn');
+  const orig = btn.textContent;
+  btn.disabled = true; btn.textContent = '生成中…';
+  try{
+    const canvas = await renderCanvas();
+    if(isMobileDevice()){
+      // 手机端：生成长图，展示供长按保存到相册（并提供下载兜底）
+      const data = canvas.toDataURL('image/png');
+      document.getElementById('ovImg').src = data;
+      document.getElementById('ovSave').href = data;
+      document.getElementById('imgOverlay').classList.add('show');
+    }else{
+      // 电脑端：直接生成 PDF 保存，不弹打印框
+      const img = canvas.toDataURL('image/jpeg', 0.92);
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pw = pdf.internal.pageSize.getWidth();
+      const ph = pdf.internal.pageSize.getHeight();
+      const imgH = canvas.height * pw / canvas.width;
+      let position = 0, remaining = imgH;
+      pdf.addImage(img, 'JPEG', 0, position, pw, imgH);
+      remaining -= ph;
+      while(remaining > 0){
+        position -= ph;
+        pdf.addPage();
+        pdf.addImage(img, 'JPEG', 0, position, pw, imgH);
+        remaining -= ph;
+      }
+      pdf.save('剑桥推课逻辑说明.pdf');
+    }
+  }catch(e){
+    console.error(e);
+    alert('生成失败，请重试');
+  }finally{
+    btn.disabled = false; btn.textContent = orig;
+  }
+}
+</script>
 </body>
 </html>
