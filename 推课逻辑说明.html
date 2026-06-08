@@ -167,24 +167,8 @@
   .topbtn:active{transform:scale(.96);}
   .topbtn[disabled]{opacity:.6; cursor:default;}
 
-  /* 生成图片/PDF 时隐藏交互元素 */
-  body.capturing .topbtn, body.capturing #imgOverlay{display:none !important;}
-
-  /* 手机端长图预览浮层 */
-  #imgOverlay{
-    position:fixed; inset:0; z-index:100; background:rgba(15,23,42,.88);
-    display:none; flex-direction:column; align-items:center;
-    padding:18px 14px; overflow:auto;
-  }
-  #imgOverlay.show{display:flex;}
-  #imgOverlay .tip{color:#fff; font-size:14px; font-weight:600; margin-bottom:12px; text-align:center;}
-  #imgOverlay img{max-width:100%; border-radius:10px; box-shadow:0 8px 30px rgba(0,0,0,.4);}
-  #imgOverlay .ov-actions{display:flex; gap:10px; margin:14px 0 6px;}
-  #imgOverlay .ov-actions a, #imgOverlay .ov-actions button{
-    padding:9px 18px; border-radius:999px; font-size:13.5px; font-weight:700;
-    background:#fff; color:var(--blue); border:1px solid var(--blue-bd); text-decoration:none; cursor:pointer;
-  }
-  #imgOverlay .ov-actions .close{background:transparent; color:#fff; border-color:rgba(255,255,255,.5);}
+  /* 生成 PDF 时隐藏下载键，避免被截入 */
+  body.capturing .topbtn{display:none !important;}
 
   @media print{
     .topbtn{display:none !important;}
@@ -219,8 +203,8 @@
     td .badge{margin-bottom:8px;}
     /* 第三列（说明）整行显示，正常换行 */
     td:last-child{font-size:13px; color:var(--sub); line-height:1.6;}
-    /* 下载按钮缩小，避免遮挡表头 */
-    .topbtn{top:12px; right:12px; padding:7px 12px; font-size:12.5px;}
+    /* 手机端不显示下载键（下载仅在网页版/电脑端提供） */
+    .topbtn{display:none !important;}
   }
 </style>
 </head>
@@ -435,16 +419,6 @@
 
 </div>
 
-<!-- 手机端长图预览浮层 -->
-<div id="imgOverlay">
-  <div class="tip">长按下方图片即可保存到相册</div>
-  <img id="ovImg" alt="推课逻辑长图">
-  <div class="ov-actions">
-    <a id="ovSave" download="剑桥推课逻辑说明.png">下载图片</a>
-    <button class="close" onclick="document.getElementById('imgOverlay').classList.remove('show')">关闭</button>
-  </div>
-</div>
-
 <script src="vendor/html2canvas.min.js"></script>
 <script src="vendor/jspdf.umd.min.js"></script>
 <script>
@@ -453,58 +427,77 @@ function isMobileDevice(){
       || window.matchMedia('(max-width:680px)').matches;
 }
 
-async function renderCanvas(){
-  document.body.classList.add('capturing');
-  // 回到顶部，确保 html2canvas 从页头完整截取（含标题区背景）
-  window.scrollTo(0, 0);
-  // 等两帧，确保按钮已隐藏、滚动已生效
-  await new Promise(r => requestAnimationFrame(()=>requestAnimationFrame(r)));
-  const canvas = await html2canvas(document.body, {
-    backgroundColor: '#ffffff',
-    scale: Math.min(2, window.devicePixelRatio || 1.5) < 1.5 ? 1.5 : 2,
-    useCORS: true,
-    windowWidth: document.documentElement.scrollWidth,
-    windowHeight: document.documentElement.scrollHeight
+// 手机/窄屏不显示下载键（下载仅在网页版/电脑端提供）
+(function(){
+  if(isMobileDevice()){
+    var b = document.getElementById('dlBtn');
+    if(b) b.style.display = 'none';
+  }
+})();
+
+// 截取单个内容块为 canvas
+async function snap(el){
+  return html2canvas(el, {
+    backgroundColor: el.classList && el.classList.contains('hero') ? '#1e3a8a' : '#ffffff',
+    scale: 3,            // 高倍率，保证文字清晰
+    useCORS: true
   });
-  document.body.classList.remove('capturing');
-  return canvas;
 }
 
+// 电脑端：按内容块逐块排版生成 PDF，分页不切断内容；不弹打印框
 async function downloadDoc(){
   const btn = document.getElementById('dlBtn');
   const orig = btn.textContent;
   btn.disabled = true; btn.textContent = '生成中…';
+  document.body.classList.add('capturing');
+  window.scrollTo(0, 0);
+  await new Promise(r => requestAnimationFrame(()=>requestAnimationFrame(r)));
   try{
-    const canvas = await renderCanvas();
-    if(isMobileDevice()){
-      // 手机端：生成长图，展示供长按保存到相册（并提供下载兜底）
-      const data = canvas.toDataURL('image/png');
-      document.getElementById('ovImg').src = data;
-      document.getElementById('ovSave').href = data;
-      document.getElementById('imgOverlay').classList.add('show');
-    }else{
-      // 电脑端：直接生成 PDF 保存，不弹打印框
-      const img = canvas.toDataURL('image/jpeg', 0.92);
-      const { jsPDF } = window.jspdf;
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pw = pdf.internal.pageSize.getWidth();
-      const ph = pdf.internal.pageSize.getHeight();
-      const imgH = canvas.height * pw / canvas.width;
-      let position = 0, remaining = imgH;
-      pdf.addImage(img, 'JPEG', 0, position, pw, imgH);
-      remaining -= ph;
-      while(remaining > 0){
-        position -= ph;
-        pdf.addPage();
-        pdf.addImage(img, 'JPEG', 0, position, pw, imgH);
-        remaining -= ph;
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pageW = pdf.internal.pageSize.getWidth();   // 210
+    const pageH = pdf.internal.pageSize.getHeight();  // 297
+    const margin = 12;
+    const contentW = pageW - margin * 2;              // 186 → 内容更大、字号更清晰
+    const usableH = pageH - margin * 2;
+    const gap = 5;
+
+    // 原子内容块，按文档顺序；每块整体不拆分到两页
+    const blocks = Array.from(document.querySelectorAll(
+      '.hero, .sec-head, .card, .tree > .branch, .tree > .callout, .mods > .mod, .foot'
+    ));
+
+    let y = margin;
+    let firstOnPage = true;
+    for(const el of blocks){
+      const canvas = await snap(el);
+      let drawW = contentW;
+      let drawH = canvas.height * drawW / canvas.width;
+      // 极少数超高块：缩放以适配单页
+      if(drawH > usableH){
+        drawH = usableH;
+        drawW = canvas.width * drawH / canvas.height;
       }
-      pdf.save('剑桥推课逻辑说明.pdf');
+      const isHead = el.classList.contains('sec-head');
+      // 章节标题避免成为孤行：后面至少留 32mm，否则换页
+      const needRoom = isHead ? drawH + 32 : drawH;
+      if(!firstOnPage && y + needRoom > pageH - margin){
+        pdf.addPage();
+        y = margin;
+        firstOnPage = true;
+      }
+      const x = margin + (contentW - drawW) / 2;
+      pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', x, y, drawW, drawH);
+      y += drawH + gap;
+      firstOnPage = false;
     }
+
+    pdf.save('剑桥推课逻辑说明.pdf');
   }catch(e){
     console.error(e);
     alert('生成失败，请重试');
   }finally{
+    document.body.classList.remove('capturing');
     btn.disabled = false; btn.textContent = orig;
   }
 }
