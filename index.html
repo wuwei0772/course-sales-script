@@ -356,19 +356,19 @@ function getLevel(score, exam) {
   exam = exam || examType;
   if (exam === 'PET') {
     // B1 Preliminary 剑桥量表 120–170（官方）
-    if (score < 102) return { label: 'Pre-A1',     bg: 'bg-slate-100',  text: 'text-slate-500',  border: 'border-slate-300' };
-    if (score < 140) return { label: 'A2',         bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-300' };
-    if (score < 153) return { label: 'B1 Grade C', bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-300' };
-    if (score < 160) return { label: 'B1 Grade B', bg: 'bg-blue-50',   text: 'text-blue-700',   border: 'border-blue-300' };
-    return               { label: 'B2 Grade A', bg: 'bg-green-50',  text: 'text-green-700',  border: 'border-green-300' };
+    if (score < 102) return { label: 'Pre-A1',     result: '未通过', bg: 'bg-slate-100',  text: 'text-slate-500',  border: 'border-slate-300' };
+    if (score < 140) return { label: 'A2',         result: '未通过', bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-300' };
+    if (score < 153) return { label: 'B1 Grade C', result: '通过',   bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-300' };
+    if (score < 160) return { label: 'B1 Grade B', result: '优秀',   bg: 'bg-blue-50',   text: 'text-blue-700',   border: 'border-blue-300' };
+    return               { label: 'B2 Grade A', result: '卓越',   bg: 'bg-green-50',  text: 'text-green-700',  border: 'border-green-300' };
   }
   // A2 Key 剑桥量表 100–150（官方）
-  if (score < 82)  return { label: '未达 Pre-A1', bg: 'bg-slate-100', text: 'text-slate-500', border: 'border-slate-300' };
-  if (score < 100) return { label: 'Pre-A1', bg: 'bg-slate-100', text: 'text-slate-500', border: 'border-slate-300' };
-  if (score < 120) return { label: 'A1',      bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-300' };
-  if (score < 133) return { label: 'A2 Grade C', bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-300' };
-  if (score < 140) return { label: 'A2 Grade B', bg: 'bg-blue-50',   text: 'text-blue-700',   border: 'border-blue-300' };
-  return               { label: 'B1 Grade A', bg: 'bg-green-50',  text: 'text-green-700',  border: 'border-green-300' };
+  if (score < 82)  return { label: '未达 Pre-A1', result: '未通过', bg: 'bg-slate-100', text: 'text-slate-500', border: 'border-slate-300' };
+  if (score < 100) return { label: 'Pre-A1',      result: '未通过', bg: 'bg-slate-100', text: 'text-slate-500', border: 'border-slate-300' };
+  if (score < 120) return { label: 'A1',           result: '未通过', bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-300' };
+  if (score < 133) return { label: 'A2 Grade C',   result: '通过',   bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-300' };
+  if (score < 140) return { label: 'A2 Grade B',   result: '优秀',   bg: 'bg-blue-50',   text: 'text-blue-700',   border: 'border-blue-300' };
+  return               { label: 'B1 Grade A',   result: '卓越',   bg: 'bg-green-50',  text: 'text-green-700',  border: 'border-green-300' };
 }
 
 function getCurrentGrade(avg) {
@@ -445,7 +445,7 @@ function refreshUI() {
     document.getElementById('avg-val').textContent = Math.round(avg);
     const lv = getLevel(avg);
     const badge = document.getElementById('avg-badge');
-    badge.textContent = lv.label;
+    badge.textContent = `${lv.label} · ${lv.result}`;
     badge.className = `text-xs px-2 py-0.5 rounded-full font-semibold border ${lv.bg} ${lv.text} ${lv.border}`;
   } else {
     avgRow.classList.add('hidden');
@@ -603,12 +603,14 @@ ${getWeaknessText(b, level, isPU3)}`;
   }
 
   const currentGrade = getCurrentGrade(avg);
-  const levelStr = getLevel(avg).label;
+  const avgLevel = getLevel(avg);
+  const levelStr = avgLevel.label;
+  const resultStr = avgLevel.result;
   const { course, goal } = getCourseAndGoal(avg, minScore);
 
   const script =
 `【成绩分析】
-孩子这次 ${examType} 模考四项均分是 ${Math.round(avg)} 分，对应剑桥 ${levelStr} 的水平。用公立校来类比，大概相当于${currentGrade}的英语词汇量和阅读水平。
+孩子这次 ${examType} 模考四项均分是 ${Math.round(avg)} 分，对应剑桥 ${levelStr} 的水平（${examType} ${resultStr}）。用公立校来类比，大概相当于${currentGrade}的英语词汇量和阅读水平。
 
 【推荐课程】
 ${course}
