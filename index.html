@@ -216,9 +216,71 @@ body.app-bg{
 /* 复制按钮 */
 .copy-btn{color:#f5331d;background:#fff1ec;}
 .copy-btn:active{background:#ffe0d6;}
+/* ── 密码锁屏 ── */
+#lock-screen{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#ff8a00 0%,#ff5a1f 55%,#f5331d 100%);
+}
+#lock-box{
+  background:#fff;border-radius:1.25rem;padding:2rem 1.75rem;width:min(88vw,320px);
+  box-shadow:0 24px 48px -12px rgba(245,51,29,.45);text-align:center;
+}
+#lock-box h2{font-size:1.1rem;font-weight:700;color:#1e293b;margin-bottom:.35rem;}
+#lock-box p{font-size:.8rem;color:#94a3b8;margin-bottom:1.25rem;}
+#pin-dots{display:flex;justify-content:center;gap:.75rem;margin-bottom:1.5rem;}
+.pin-dot{
+  width:14px;height:14px;border-radius:9999px;
+  border:2px solid #dbe2ec;background:#fff;transition:all .15s ease;
+}
+.pin-dot.filled{background:#f5331d;border-color:#f5331d;}
+#pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;}
+.pin-key{
+  padding:.85rem 0;border-radius:.75rem;font-size:1.25rem;font-weight:600;color:#1e293b;
+  background:#f8fafc;border:1px solid #e2e8f0;
+  transition:background .12s,transform .1s;cursor:pointer;
+}
+.pin-key:active{background:#ffe0d6;border-color:#ffc7b0;transform:scale(.94);}
+.pin-key.del{font-size:1rem;color:#64748b;}
+.pin-key.empty{visibility:hidden;}
+#lock-error{
+  font-size:.78rem;color:#ef4444;font-weight:600;
+  margin-top:.9rem;min-height:1.1rem;
+  animation:shake .3s ease;
+}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 </style>
 </head>
 <body class="app-bg min-h-screen font-sans text-slate-800">
+
+<!-- 密码锁屏 -->
+<div id="lock-screen">
+  <div id="lock-box">
+    <h2>请输入访问密码</h2>
+    <p>剑桥小班课推课话术</p>
+    <div id="pin-dots">
+      <div class="pin-dot" id="dot-0"></div>
+      <div class="pin-dot" id="dot-1"></div>
+      <div class="pin-dot" id="dot-2"></div>
+      <div class="pin-dot" id="dot-3"></div>
+    </div>
+    <div id="pin-pad">
+      <button class="pin-key" onclick="pinInput('1')">1</button>
+      <button class="pin-key" onclick="pinInput('2')">2</button>
+      <button class="pin-key" onclick="pinInput('3')">3</button>
+      <button class="pin-key" onclick="pinInput('4')">4</button>
+      <button class="pin-key" onclick="pinInput('5')">5</button>
+      <button class="pin-key" onclick="pinInput('6')">6</button>
+      <button class="pin-key" onclick="pinInput('7')">7</button>
+      <button class="pin-key" onclick="pinInput('8')">8</button>
+      <button class="pin-key" onclick="pinInput('9')">9</button>
+      <button class="pin-key empty" disabled></button>
+      <button class="pin-key" onclick="pinInput('0')">0</button>
+      <button class="pin-key del" onclick="pinDelete()">⌫</button>
+    </div>
+    <div id="lock-error"></div>
+  </div>
+</div>
 <button onclick="window.open('推课逻辑说明.html','_blank')"
   style="position:fixed;top:14px;right:14px;z-index:50;display:inline-flex;align-items:center;gap:5px;padding:8px 14px;border-radius:999px;background:#fff;color:#f5331d;font-size:13px;font-weight:700;border:1px solid #ffc7b0;box-shadow:0 4px 14px rgba(15,23,42,.12);">
   概览
@@ -585,6 +647,43 @@ function showCopyMsg() {
   const msg = document.getElementById('copy-msg');
   msg.classList.remove('hidden');
   setTimeout(() => msg.classList.add('hidden'), 2000);
+}
+
+// ── 密码锁 ────────────────────────────────────────────────
+const CORRECT_PIN = '0772';
+let pinBuffer = '';
+
+function pinInput(digit) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += digit;
+  updateDots();
+  if (pinBuffer.length === 4) checkPin();
+}
+
+function pinDelete() {
+  pinBuffer = pinBuffer.slice(0, -1);
+  document.getElementById('lock-error').textContent = '';
+  updateDots();
+}
+
+function updateDots() {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById(`dot-${i}`).classList.toggle('filled', i < pinBuffer.length);
+  }
+}
+
+function checkPin() {
+  if (pinBuffer === CORRECT_PIN) {
+    document.getElementById('lock-screen').style.display = 'none';
+  } else {
+    const err = document.getElementById('lock-error');
+    err.textContent = '密码错误，请重试';
+    err.style.animation = 'none';
+    void err.offsetWidth;
+    err.style.animation = 'shake .3s ease';
+    pinBuffer = '';
+    updateDots();
+  }
 }
 
 // ── Init ───────────────────────────────────────────────────
